@@ -1,0 +1,9 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+  - name: Destroy Ubuntu machines
+    ansible.builtin.command: /sbin/shutdown -t now
+    when:
+      ansible_facts['os_family'] == 'Debian' #RedHat for aws-linux

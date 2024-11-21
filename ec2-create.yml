@@ -1,0 +1,22 @@
+---
+- hosts: localhost
+  connection: local
+
+  tasks:
+  - name: Create EC2 instances
+    amazon.aws.ec2_instance:
+      name: "{{ item.name }}"
+      key_name: "rogu-tests-ec2" #change key-value pair name
+      instance_type: t2.micro
+      security_group: default
+      region: us-east-1
+      aws_access_key: "{{ec2_access_key}}"  # From vault as defined
+      aws_secret_key: "{{ec2_secret_key}}"  # From vault as defined      
+      network:
+        assign_public_ip: yes
+      image_id: "{{ item.image }}"
+    loop:
+    # Change ami id according to your account
+    - {image: ami-012967cc5a8c9f891 ,name: manage-node-1}
+    - {image: ami-0866a3c8686eaeeba ,name: manage-node-2}
+    - {image: ami-0866a3c8686eaeeba ,name: manage-node-3}
